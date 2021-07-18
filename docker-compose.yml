@@ -1,0 +1,35 @@
+version: "3"
+services:
+  node:
+    build: 
+        context: ./.bin/node
+    user: "node"
+    working_dir: /home/app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./app:/home/app
+    command: "npm run dev"
+    ports:
+        - "4646:4646"
+    networks:
+      - mongo_net
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    restart: always
+    volumes: 
+      - ./data:/data/db
+    ports:
+      - 27017:27017
+    networks:
+      - mongo_net
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+networks:
+  mongo_net:
+    driver: bridge
