@@ -1,10 +1,19 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.json({
-        status: 'API Works!!!'
-    });
-})
+const Task = require('../models/task');
+
+router.get('/', async (req, res) => {
+    const tasks = await Task.find({});
+    res.json(tasks);
+});
+
+router.post('/', async (req, res) => {
+    const { title, description} = req.body;
+    const task = new Task({ title, description });
+    task.save();
+    res.json({status: 'Task Saved'});
+});
+
 
 module.exports = router;

@@ -3,6 +3,8 @@ const morgan = require('morgan');
 const path = require('path');
 const app = express();
 
+require('./database'); 
+
 // Settings
 app.set('port', process.env.PORT || 3000)
 
